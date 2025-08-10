@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Find Parking</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    body { margin:0; font-family: system-ui, Arial, sans-serif; }
+    #topbar { display:flex; gap:8px; padding:10px; align-items:center; border-bottom:1px solid #eee; }
+    #search { flex:1; padding:8px 10px; font-size:16px; border:1px solid #ccc; border-radius:6px; }
+    #btn { padding:8px 12px; font-size:16px; border:0; border-radius:6px; cursor:pointer; }
+    #map { height: calc(100vh - 56px); width: 100vw; }
+    #status { font-size:14px; color:#555; }
+  </style>
+</head>
+<body>
+  <div id="topbar">
+    <input id="search" placeholder="Search an address or area in Melbourne (e.g. Collins St, Docklands)" />
+    <button id="btn">Search</button>
+    <span id="status">Ready</span>
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map').setView([-37.814, 144.96332], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+  const markers = L.layerGroup().addTo(map);
+  let searchMarker = null;
+  const statusEl = document.getElementById('status');
+
+  // ---- helper: show "X ago" for realtime confidence
+  function ago(iso){
+    if(!iso) return '';
+    const secs = Math.floor((Date.now() - new Date(iso).getTime())/1000);
+    if (secs < 60) return `${secs}s ago`;
+    const mins = Math.floor(secs/60);
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins/60);
+    return `${hrs}h ago`;
+  }
+
+  // Simple colored circle marker by availability ratio
+  function zoneMarker(lat, lon, avail, total) {
+    const ratio = (total && total > 0) ? (avail || 0) / total : 0;
+    const color = ratio >= 0.5 ? 'green' : ratio >= 0.2 ? 'orange' : 'red';
+    return L.circleMarker([lat, lon], { radius: 7, color, weight: 2, fillOpacity: 0.7 });
+  }
+
+  async function refreshArea() {
+    const b = map.getBounds();
+    const bbox = [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()].join(',');
+    statusEl.textContent = 'Loading parking...';
+    try {
+      const r = await fetch(`/api/zones?bbox=${bbox}`);
+      const { results } = await r.json();
+      markers.clearLayers();
+      results.forEach(z => {
+        if (!z.coords || z.coords.lat == null || z.coords.lon == null) return;
+        const m = zoneMarker(z.coords.lat, z.coords.lon, z.available_spots, z.total_spots);
+        m.bindPopup(`
+          <b>${z.street || 'Zone ' + z.zone_number}</b><br/>
+          <b>Available:</b> ${z.available_spots ?? '-'} / ${z.total_spots ?? '-'}<br/>
+          ${z.latest_update ? `<small>Updated: ${ago(z.latest_update)}</small><br/>` : ''}
+          <small>${(+z.coords.lat).toFixed(6)}, ${(+z.coords.lon).toFixed(6)}</small>
+        `);
+        markers.addLayer(m);
+      });
+      const t = new Date().toLocaleTimeString();
+      statusEl.textContent = `${results.length} zones · last fetch ${t}`;
+    } catch (e) {
+      console.error(e);
+      statusEl.textContent = 'Error loading parking';
+    }
+  }
+
+  map.on('moveend', refreshArea);
+  refreshArea();
+  setInterval(refreshArea, 15000); // refresh every 15s
+
+  // Geocode (bias to Melbourne)
+  async function geocode(q) {
+    const melbourneBias = "&viewbox=144.7,-37.6,145.1,-37.95&bounded=1";
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1&countrycodes=au${melbourneBias}`;
+    const r = await fetch(url, { headers: { 'Accept-Language': 'en' }});
+    const data = await r.json();
+    return data[0];
+  }
+
+  async function searchAndCenter() {
+    const q = document.getElementById('search').value.trim();
+    if (!q) return;
+    statusEl.textContent = 'Searching...';
+    const res = await geocode(q);
+    if (!res) { statusEl.textContent = 'No results in Melbourne'; return; }
+    const lat = parseFloat(res.lat), lon = parseFloat(res.lon);
+    map.setView([lat, lon], 16);
+    if (searchMarker) map.removeLayer(searchMarker);
+    searchMarker = L.marker([lat, lon], {opacity:0.7}).addTo(map).bindPopup(`Search: ${res.display_name}`).openPopup();
+    refreshArea(); // fetch zones at new view
+  }
+
+  document.getElementById('btn').addEventListener('click', searchAndCenter);
+  document.getElementById('search').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') searchAndCenter();
+  });
+</script>
+
+</body>
+</html>
