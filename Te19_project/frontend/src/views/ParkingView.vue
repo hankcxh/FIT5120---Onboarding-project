@@ -124,7 +124,6 @@ import HeaderBar from '../components/HeaderBar.vue'
 
 // Dynamic Leaflet import for better build compatibility
 let L = null;
-let leafletLoaded = false;
 
 export default {
   name: 'ParkingView',
@@ -138,7 +137,6 @@ export default {
       map: null,
       markers: [],
       leafletLoaded: false,
-      // Hard-coded API URL for deployment
       apiUrl: 'https://ccj3gsn6fl.execute-api.ap-southeast-2.amazonaws.com/prod'
     }
   },
@@ -228,9 +226,10 @@ export default {
         console.log('Tile layer added');
         
         // Add test marker
+        // eslint-disable-next-line no-unused-vars
         const marker = L.marker([-37.8136, 144.9631])
           .addTo(this.map)
-          .bindPopup('🗺️ MAP IS WORKING!<br>Melbourne CBD<br>Search for parking above');
+          .bindPopup('MAP IS WORKING!<br>Melbourne CBD<br>Search for parking above');
         
         console.log('Test marker added');
         
@@ -238,12 +237,12 @@ export default {
         setTimeout(() => {
           if (this.map) {
             this.map.invalidateSize();
-            console.log('✅ MAP INITIALIZED SUCCESSFULLY!');
+            console.log('MAP INITIALIZED SUCCESSFULLY!');
           }
         }, 200);
         
       } catch (error) {
-        console.error('❌ MAP INITIALIZATION FAILED:', error);
+        console.error('MAP INITIALIZATION FAILED:', error);
         this.leafletLoaded = false;
       }
     },
@@ -354,7 +353,7 @@ export default {
         // Create popup content
         const popupContent = `
           <div style="font-family: sans-serif;">
-            <h4 style="margin: 0 0 8px 0; color: #1f2937;">🅿️ Parking Spot</h4>
+            <h4 style="margin: 0 0 8px 0; color: #1f2937;">Parking Spot</h4>
             <p style="margin: 4px 0;"><strong>Spot ID:</strong> ${spot.kerbsideId}</p>
             <p style="margin: 4px 0;"><strong>Zone:</strong> ${spot.zoneNumber}</p>
             <p style="margin: 4px 0;"><strong>Status:</strong> <span style="color: #10b981; font-weight: bold;">${spot.status}</span></p>
