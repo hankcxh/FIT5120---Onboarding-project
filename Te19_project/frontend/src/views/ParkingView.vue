@@ -1,7 +1,5 @@
 <template>
   <div class="parking-view">
-    <!-- TEST MARKER - DELETE THIS LATER -->
-    
     <!-- Header -->
     <HeaderBar />
     
@@ -57,7 +55,8 @@
         <!-- Debug Info -->
         <div class="mt-4 p-2 bg-gray-100 rounded text-sm">
           <p><strong>Debug:</strong> Map status: {{ map ? 'Initialized' : 'Not initialized' }}</p>
-          <p><strong>Leaflet:</strong> {{ typeof L !== 'undefined' ? 'Loaded' : 'Not loaded' }}</p>
+          <p><strong>Leaflet:</strong> {{ leafletLoaded ? 'Loaded' : 'Not loaded' }}</p>
+          <p><strong>API URL:</strong> {{ apiUrl }}</p>
         </div>
       </div>
 
@@ -70,6 +69,9 @@
           <p class="text-green-700">
             <span class="font-bold">{{ searchResults.availableSpots }}</span> available spots 
             out of <span class="font-bold">{{ searchResults.totalSpots }}</span> total spots
+          </p>
+          <p v-if="searchResults.note" class="text-blue-600 text-sm mt-2">
+            {{ searchResults.note }}
           </p>
         </div>
       </div>
@@ -89,6 +91,7 @@
         <div class="bg-red-50 border border-red-200 rounded-lg p-4">
           <h3 class="text-lg font-semibold text-red-800 mb-2">Error</h3>
           <p class="text-red-700">{{ error }}</p>
+          <p class="text-sm text-gray-600 mt-2">API URL: {{ apiUrl }}</p>
         </div>
       </div>
 
@@ -118,26 +121,16 @@
 
 <script>
 import HeaderBar from '../components/HeaderBar.vue'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
-// Import Leaflet - FORCE IMPORT
-let L;
-try {
-  L = require('leaflet');
-  require('leaflet/dist/leaflet.css');
-  console.log('Leaflet imported successfully');
-} catch (error) {
-  console.error('Failed to import Leaflet:', error);
-}
-
-// Fix for Webpack marker icons - CRITICAL FIX
-if (L) {
-  delete L.Icon.Default.prototype._getIconUrl;
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-  });
-}
+// Fix for default markers in Leaflet with Webpack
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 export default {
   name: 'ParkingView',
@@ -150,11 +143,16 @@ export default {
       error: null,
       map: null,
       markers: [],
-      // Your API Gateway URL
-      apiUrl: process.env.VUE_APP_API_URL
+      leafletLoaded: true,
+      // FIXED: Use your actual Lambda API Gateway URL
+      apiUrl: 'https://ccj3gsn6fl.execute-api.ap-southeast-2.amazonaws.com/prod'
     }
   },
   mounted() {
+    console.log('=== COMPONENT DEBUG ===');
+    console.log('API URL:', this.apiUrl);
+    console.log('Leaflet available:', typeof L !== 'undefined');
+    
     // Wait for DOM to be fully rendered
     this.$nextTick(() => {
       this.initializeMap();
@@ -168,12 +166,6 @@ export default {
   methods: {
     initializeMap() {
       console.log('=== MAP INITIALIZATION DEBUG ===');
-      
-      // Check if Leaflet is available
-      if (typeof L === 'undefined') {
-        console.error('LEAFLET NOT FOUND! Install with: npm install leaflet');
-        return;
-      }
       
       try {
         const container = this.$refs.mapContainer;
@@ -210,10 +202,9 @@ export default {
         console.log('Tile layer added');
         
         // Add test marker
-        // eslint-disable-next-line no-unused-vars
         const marker = L.marker([-37.8136, 144.9631])
           .addTo(this.map)
-          .bindPopup('MAP IS WORKING!<br>Melbourne CBD<br>Search for parking above');
+          .bindPopup('🗺️ MAP IS WORKING!<br>Melbourne CBD<br>Search for parking above');
         
         console.log('Test marker added');
         
@@ -221,12 +212,13 @@ export default {
         setTimeout(() => {
           if (this.map) {
             this.map.invalidateSize();
-            console.log('MAP INITIALIZED SUCCESSFULLY!');
+            console.log('✅ MAP INITIALIZED SUCCESSFULLY!');
           }
         }, 200);
         
       } catch (error) {
-        console.error('MAP INITIALIZATION FAILED:', error);
+        console.error('❌ MAP INITIALIZATION FAILED:', error);
+        this.leafletLoaded = false;
       }
     },
     
@@ -241,14 +233,19 @@ export default {
       try {
         console.log('Searching for:', this.searchStreet);
         
-        // Make API call to your Lambda function
-        const response = await fetch(`${this.apiUrl}/parking?street=${encodeURIComponent(this.searchStreet)}`, {
+        // FIXED: Use correct Lambda endpoint
+        const apiCall = `${this.apiUrl}?street=${encodeURIComponent(this.searchStreet)}`;
+        console.log('API Call:', apiCall);
+        
+        const response = await fetch(apiCall, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           }
         });
+        
+        console.log('Response status:', response.status);
         
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status} ${response.statusText}`);
@@ -275,7 +272,6 @@ export default {
         
       } catch (err) {
         console.error('Search error:', err);
-        console.error('API URL being called:', `${this.apiUrl}?street=${encodeURIComponent(this.searchStreet)}`);
         this.error = `Failed to connect to parking service: ${err.message}`;
       } finally {
         this.loading = false;
@@ -332,12 +328,12 @@ export default {
         // Create popup content
         const popupContent = `
           <div style="font-family: sans-serif;">
-            <h4 style="margin: 0 0 8px 0; color: #1f2937;">Parking Spot</h4>
+            <h4 style="margin: 0 0 8px 0; color: #1f2937;">🅿️ Parking Spot</h4>
             <p style="margin: 4px 0;"><strong>Spot ID:</strong> ${spot.kerbsideId}</p>
             <p style="margin: 4px 0;"><strong>Zone:</strong> ${spot.zoneNumber}</p>
             <p style="margin: 4px 0;"><strong>Status:</strong> <span style="color: #10b981; font-weight: bold;">${spot.status}</span></p>
             <p style="margin: 4px 0; font-size: 12px; color: #6b7280;">
-              ${spot.lat.toFixed(6)}, ${spot.lng.toFixed(6)}
+              📍 ${spot.lat.toFixed(6)}, ${spot.lng.toFixed(6)}
             </p>
           </div>
         `;
