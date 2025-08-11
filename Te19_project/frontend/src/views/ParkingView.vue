@@ -121,16 +121,10 @@
 
 <script>
 import HeaderBar from '../components/HeaderBar.vue'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
 
-// Fix for default markers in Leaflet with Webpack
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+// Dynamic Leaflet import for better build compatibility
+let L = null;
+let leafletLoaded = false;
 
 export default {
   name: 'ParkingView',
@@ -143,15 +137,17 @@ export default {
       error: null,
       map: null,
       markers: [],
-      leafletLoaded: true,
-      // FIXED: Use your actual Lambda API Gateway URL
+      leafletLoaded: false,
+      // Hard-coded API URL for deployment
       apiUrl: 'https://ccj3gsn6fl.execute-api.ap-southeast-2.amazonaws.com/prod'
     }
   },
-  mounted() {
+  async mounted() {
     console.log('=== COMPONENT DEBUG ===');
     console.log('API URL:', this.apiUrl);
-    console.log('Leaflet available:', typeof L !== 'undefined');
+    
+    // Load Leaflet dynamically
+    await this.loadLeaflet();
     
     // Wait for DOM to be fully rendered
     this.$nextTick(() => {
@@ -164,8 +160,38 @@ export default {
     }
   },
   methods: {
+    async loadLeaflet() {
+      try {
+        // Dynamic import of Leaflet
+        const leafletModule = await import('leaflet');
+        L = leafletModule.default;
+        
+        // Import CSS
+        await import('leaflet/dist/leaflet.css');
+        
+        // Fix for default markers
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        });
+        
+        this.leafletLoaded = true;
+        console.log('Leaflet loaded successfully');
+        
+      } catch (error) {
+        console.error('Failed to load Leaflet:', error);
+        this.leafletLoaded = false;
+      }
+    },
     initializeMap() {
       console.log('=== MAP INITIALIZATION DEBUG ===');
+      
+      if (!L || !this.leafletLoaded) {
+        console.error('Leaflet not loaded yet');
+        return;
+      }
       
       try {
         const container = this.$refs.mapContainer;
