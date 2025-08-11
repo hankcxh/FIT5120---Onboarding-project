@@ -11,19 +11,8 @@
   ],
   "routes": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/frontend/dist/assets/$1"
-    },
-    {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|map))",
-      "dest": "/frontend/dist/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "/frontend/dist/index.html"
     }
-  ],
-  "env": {
-    "VUE_APP_API_URL": "@vue_app_api_url"
-  }
+  ]
 }
