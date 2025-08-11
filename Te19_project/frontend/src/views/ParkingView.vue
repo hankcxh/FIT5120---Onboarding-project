@@ -1,9 +1,5 @@
 <template>
   <div class="parking-view">
-    <!-- TEST MARKER - DELETE THIS LATER -->
-    <div style="background: red; color: white; padding: 10px; text-align: center; font-weight: bold;">
-      🔥 NEW CODE LOADED - VERSION 2.0 🔥
-    </div>
     
     <!-- Header -->
     <HeaderBar />
