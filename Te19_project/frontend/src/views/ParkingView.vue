@@ -218,7 +218,7 @@ export default {
         // eslint-disable-next-line no-unused-vars
         const marker = L.marker([-37.8136, 144.9631])
           .addTo(this.map)
-          .bindPopup('🗺️ MAP IS WORKING!<br>Melbourne CBD<br>Search for parking above');
+          .bindPopup('MAP IS WORKING!<br>Melbourne CBD<br>Search for parking above');
         
         console.log('Test marker added');
         
@@ -226,12 +226,12 @@ export default {
         setTimeout(() => {
           if (this.map) {
             this.map.invalidateSize();
-            console.log('✅ MAP INITIALIZED SUCCESSFULLY!');
+            console.log('MAP INITIALIZED SUCCESSFULLY!');
           }
         }, 200);
         
       } catch (error) {
-        console.error('❌ MAP INITIALIZATION FAILED:', error);
+        console.error('MAP INITIALIZATION FAILED:', error);
       }
     },
     
@@ -337,12 +337,12 @@ export default {
         // Create popup content
         const popupContent = `
           <div style="font-family: sans-serif;">
-            <h4 style="margin: 0 0 8px 0; color: #1f2937;">🅿️ Parking Spot</h4>
+            <h4 style="margin: 0 0 8px 0; color: #1f2937;">Parking Spot</h4>
             <p style="margin: 4px 0;"><strong>Spot ID:</strong> ${spot.kerbsideId}</p>
             <p style="margin: 4px 0;"><strong>Zone:</strong> ${spot.zoneNumber}</p>
             <p style="margin: 4px 0;"><strong>Status:</strong> <span style="color: #10b981; font-weight: bold;">${spot.status}</span></p>
             <p style="margin: 4px 0; font-size: 12px; color: #6b7280;">
-              📍 ${spot.lat.toFixed(6)}, ${spot.lng.toFixed(6)}
+               ${spot.lat.toFixed(6)}, ${spot.lng.toFixed(6)}
             </p>
           </div>
         `;
