@@ -12,7 +12,8 @@
           </div>
           <div class="card-body split-grid">
             <div class="chart-wrap">
-              <canvas ref="vehicleChart" aria-label="Vehicles over time" role="img"></canvas>
+              <!-- force canvas to remount whenever key changes -->
+              <canvas :key="vehicleKey" ref="vehicleChart" aria-label="Vehicles over time" role="img"></canvas>
             </div>
             <div class="insight-list">
               <h2>Vehicle Insights</h2>
@@ -33,7 +34,7 @@
           </div>
           <div class="card-body split-grid">
             <div class="chart-wrap">
-              <canvas ref="popChart" aria-label="CBD population over time" role="img"></canvas>
+              <canvas :key="popKey" ref="popChart" aria-label="CBD population over time" role="img"></canvas>
             </div>
             <div class="insight-list">
               <h2>Population Insights</h2>
@@ -58,96 +59,121 @@ import {
   LineController, LineElement, PointElement,
   BarController, BarElement,
   LinearScale, CategoryScale,
-  Tooltip, Legend, Filler, Title
+  Tooltip, Legend, Title
 } from 'chart.js'
 import HeaderBar from '../components/HeaderBar.vue'
 
-// Register required bits (v3/v4)
+// Register only what we use
 Chart.register(
   LineController, LineElement, PointElement,
   BarController, BarElement,
   LinearScale, CategoryScale,
-  Tooltip, Legend, Filler, Title
+  Tooltip, Legend, Title
 )
 
-// Use RELATIVE imports (Vue CLI)
-import vehicleGrowth from '../assets/vehicle_growth.json'
-import cbdPopulation from '../assets/cbd_population.json'
+// JSON (make sure both files exist at these paths)
+import vehicleGrowth from '../assets/data/vehicle_growth.json'
+import cbdPopulation from '../assets/data/cbd_population.json'
 
 export default {
   name: 'InsightsView',
   components: { HeaderBar },
   data() {
-    return { charts: [] }
+    return {
+      charts: [],
+      vehicleKey: 0,
+      popKey: 0
+    }
   },
   methods: {
-    drawCharts(vLabels, vValues, pLabels, pValues) {
-      // cleanup
-      this.charts.forEach(c => c?.destroy?.())
+    safeCtx(refName) {
+      const el = this.$refs[refName]
+      if (!el || typeof el.getContext !== 'function') return null
+      const ctx = el.getContext('2d')
+      return ctx || null
+    },
+    destroyCharts() {
+      this.charts.forEach(c => {
+        try { c && c.destroy && c.destroy() } catch (_) {
+          // ignore chart destroy errors
+        }
+      })
       this.charts = []
+    },
+    drawCharts(vLabels, vValues, pLabels, pValues) {
+      // Always clean first
+      this.destroyCharts()
 
-      const vVals = vValues.map(Number).filter(Number.isFinite)
-      const pVals = pValues.map(Number).filter(Number.isFinite)
+      // Re-key canvases to force remount (fresh <canvas>)
+      this.vehicleKey++
+      this.popKey++
 
-      // Vehicles line + soft green fill
-      const vCtx = this.$refs.vehicleChart.getContext('2d')
-      const vGrad = vCtx.createLinearGradient(0, 0, 0, 260)
-      vGrad.addColorStop(0, 'rgba(22,163,74,0.25)')  // green-600 @ 25%
-      vGrad.addColorStop(1, 'rgba(22,163,74,0.04)')
-
-      const vChart = new Chart(vCtx, {
-        type: 'line',
-        data: {
-          labels: vLabels,
-          datasets: [{
-            label: 'Vehicles',
-            data: vVals,
-            borderColor: '#16a34a',
-            backgroundColor: vGrad,
-            fill: true,
-            tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 5
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { position: 'top' } },
-          scales: {
-            x: { grid: { display: false } },
-            y: { ticks: { callback: v => v.toLocaleString() } }
-          }
+      this.$nextTick(() => {
+        const vCtx = this.safeCtx('vehicleChart')
+        const pCtx = this.safeCtx('popChart')
+        if (!vCtx || !pCtx) {
+          // If you navigate away quickly, refs may be gone—just skip gracefully
+          return
         }
-      })
 
-      // Population bars in blue
-      const pCtx = this.$refs.popChart.getContext('2d')
-      const pChart = new Chart(pCtx, {
-        type: 'bar',
-        data: {
-          labels: pLabels,
-          datasets: [{
-            label: 'Population',
-            data: pVals,
-            backgroundColor: 'rgba(37,99,235,0.6)',
-            borderColor: '#2563eb',
-            borderWidth: 1,
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { position: 'top' } },
-          scales: {
-            x: { grid: { display: false } },
-            y: { ticks: { callback: v => v.toLocaleString() } }
+        const vVals = vValues.map(Number).filter(Number.isFinite)
+        const pVals = pValues.map(Number).filter(Number.isFinite)
+
+        // Vehicles (no fill; avoids filler path entirely)
+        const vChart = new Chart(vCtx, {
+          type: 'line',
+          data: {
+            labels: vLabels,
+            datasets: [{
+              label: 'Vehicles',
+              data: vVals,
+              borderColor: '#16a34a',
+              backgroundColor: 'rgba(22,163,74,0.15)',
+              fill: false,
+              tension: 0.3,
+              pointRadius: 3,
+              pointHoverRadius: 5
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,               // also helps avoid late draws after route change
+            plugins: { legend: { position: 'top' } },
+            scales: {
+              x: { grid: { display: false } },
+              y: { ticks: { callback: v => v.toLocaleString() } }
+            }
           }
-        }
-      })
+        })
 
-      this.charts = [vChart, pChart]
+        const pChart = new Chart(pCtx, {
+          type: 'bar',
+          data: {
+            labels: pLabels,
+            datasets: [{
+              label: 'Population',
+              data: pVals,
+              backgroundColor: 'rgba(37,99,235,0.6)',
+              borderColor: '#2563eb',
+              borderWidth: 1,
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: { legend: { position: 'top' } },
+            scales: {
+              x: { grid: { display: false } },
+              y: { ticks: { callback: v => v.toLocaleString() } }
+            }
+          }
+        })
+
+        this.charts = [vChart, pChart]
+      })
     }
   },
   mounted() {
@@ -155,10 +181,15 @@ export default {
     const vValues = vehicleGrowth.series.map(r => r.registrations)
     const pLabels = cbdPopulation.series.map(r => r.year)
     const pValues = cbdPopulation.series.map(r => r.population)
-    this.$nextTick(() => this.drawCharts(vLabels, vValues, pLabels, pValues))
+    this.drawCharts(vLabels, vValues, pLabels, pValues)
   },
   beforeUnmount() {
-    this.charts.forEach(c => c?.destroy?.())
+    this.destroyCharts()
+  },
+  // destroy charts as soon as you navigate away
+  beforeRouteLeave(to, from, next) {
+    this.destroyCharts()
+    next()
   }
 }
 </script>
@@ -169,75 +200,17 @@ export default {
   margin: 0 auto;
   padding: 40px 16px;
 }
-
-h1 {
-  font-size: 28px;
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-.card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-}
-
-.card-header {
-  padding: 10px 14px;
-  border-bottom: 1px solid #e5e7eb;
-  background: #fafafa;
-}
-
+h1 { font-size: 28px; font-weight: 800; margin-bottom: 16px; }
+.card-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.card-header { padding: 10px 14px; border-bottom: 1px solid #e5e7eb; background: #fafafa; }
 .small-text { font-size: 13px; color: #555; }
-
 .card-body { padding: 14px; }
-
-/* chart + text side-by-side (stack on mobile) */
-.split-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.chart-wrap {
-  position: relative;
-  width: 100%;
-  height: 260px;
-}
-
-.insight-list h2 {
-  font-size: 18px;
-  font-weight: 800;
-  margin: 0 0 10px;
-}
-
-.insight-list ul {
-  padding-left: 18px;
-  margin: 0;
-}
-
-.insight-list li {
-  margin: 8px 0;
-  line-height: 1.45;
-  color: #374151;
-}
-
-@media (max-width: 900px) {
-  .split-grid { grid-template-columns: 1fr; }
-  .chart-wrap { height: 240px; }
-}
-
-@media (max-width: 640px) {
-  .container { padding: 24px 12px; }
-  h1 { font-size: 22px; }
-}
+.split-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: start; }
+.chart-wrap { position: relative; width: 100%; height: 260px; }
+.insight-list h2 { font-size: 18px; font-weight: 800; margin: 0 0 10px; }
+.insight-list ul { padding-left: 18px; margin: 0; }
+.insight-list li { margin: 8px 0; line-height: 1.45; color: #374151; }
+@media (max-width: 900px) { .split-grid { grid-template-columns: 1fr; } .chart-wrap { height: 240px; } }
+@media (max-width: 640px) { .container { padding: 24px 12px; } h1 { font-size: 22px; } }
 </style>
