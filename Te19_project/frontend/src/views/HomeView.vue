@@ -2,9 +2,11 @@
   <div class="home-page">
     <HeaderBar />
     <section class="hero">
-      <h1>Smart commuting, greening Melbourne</h1>
-      <p>Get instant parking and commuting information to create a green city</p>
-      <router-link to="/insights" class="cta-button">Get started</router-link>
+      <div class="overlay">
+        <h1>Smart commuting, greening Melbourne</h1>
+        <p>Get instant parking and commuting information to create a green city</p>
+        <router-link to="/insights" class="cta-button">Get started</router-link>
+      </div>
     </section>
   </div>
 </template>
@@ -16,32 +18,43 @@ export default { name: 'HomeView', components: { HeaderBar } }
 
 <style scoped>
 .home-page {
-  background: #f7f7f7;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .hero {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 100px 20px;
-  text-align: center;
+  flex: 1;
+  background: url('@/assets/road.jpg') center/cover no-repeat; 
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero h1 {
+.overlay {
+  background: rgba(0, 0, 0, 0.4); 
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 700px;
+}
+
+.overlay h1 {
   font-size: 36px;
   font-weight: 800;
-  color: #111;
+  color: #fff;
+  margin-bottom: 16px;
 }
 
-.hero p {
-  margin-top: 16px;
+.overlay p {
   font-size: 18px;
-  color: #666;
+  color: #e2e8f0;
+  margin-bottom: 24px;
 }
 
 .cta-button {
   display: inline-block;
-  margin-top: 40px;
   padding: 14px 40px;
   background: #10b981;
   color: white;
@@ -51,8 +64,13 @@ export default { name: 'HomeView', components: { HeaderBar } }
   text-decoration: none;
   transition: background 0.3s;
 }
-
 .cta-button:hover {
   background: #0ea472;
+}
+
+@media (max-width: 640px) {
+  .overlay h1 { font-size: 24px; }
+  .overlay p { font-size: 16px; }
+  .cta-button { font-size: 16px; padding: 12px 28px; }
 }
 </style>

@@ -1,378 +1,139 @@
 <template>
   <div class="parking-view">
-    
-    <!-- Header -->
     <HeaderBar />
-    
-    <!-- Main Content -->
-    <main class="mx-auto max-w-6xl px-4 py-12">
-      <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-6">
-        Real-time parking information
-      </h1>
-      
-      <p class="text-lg text-gray-600 max-w-3xl mb-10">
-        View live parking availability and guidance for Melbourne CBD. 
-        We use real-time sensors and traffic data to help drivers find 
-        the nearest parking spots quickly, reducing congestion and emissions.
+
+    <main class="container">
+      <h1 class="title">Real-time parking information</h1>
+      <p class="subtitle">
+        View live parking availability and guidance for Melbourne CBD.
       </p>
 
-      <!-- Search Input -->
-      <div class="mb-8">
-        <div class="flex gap-4 max-w-md">
+      <!-- Search row -->
+      <div class="search-card">
+        <label class="search-label">Search parking</label>
+        <div class="search-row">
+          <select v-model="searchType" class="select">
+            <option value="street">Street</option>
+            <option value="zone">Zone ID</option>
+            <option value="suburb">Suburb</option>
+          </select>
+
           <input
             v-model="searchStreet"
-            @keyup.enter="searchParking"
             type="text"
-            placeholder="Enter street name or zone (e.g., 7394)"
-            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            :maxlength="20"
+            @input="validateLength"
+            @keyup.enter="searchParking"
+            class="input"
+            placeholder="Enter term (max 20 chars)"
           />
+
           <button
+            class="btn"
+            :disabled="loading || !searchStreet.trim() || lengthError"
             @click="searchParking"
-            :disabled="loading || !searchStreet.trim()"
-            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {{ loading ? 'Searching...' : 'Search' }}
           </button>
         </div>
-      </div>
 
-      <!-- Map Container - ALWAYS VISIBLE -->
-      <div class="rounded-xl border bg-white p-4 min-h-[500px] mb-6">
-        <h3 class="text-lg font-semibold mb-4">Melbourne Parking Map</h3>
-        
-        <!-- Map - ALWAYS SHOW -->
-        <div 
-          id="parking-map" 
-          ref="mapContainer"
-          class="w-full rounded-lg border-2 border-gray-400"
-          style="height: 500px; background-color: #f3f4f6; position: relative;"
-        >
-          <!-- Fallback content if map doesn't load -->
-          <div class="absolute inset-0 flex items-center justify-center text-gray-500">
-            Loading map...
-          </div>
-        </div>
-        
-        <!-- Debug Info -->
-        <div class="mt-4 p-2 bg-gray-100 rounded text-sm">
-          <p><strong>Debug:</strong> Map status: {{ map ? 'Initialized' : 'Not initialized' }}</p>
-          <p><strong>Leaflet:</strong> {{ typeof L !== 'undefined' ? 'Loaded' : 'Not loaded' }}</p>
-        </div>
-      </div>
-
-      <!-- Search and Results Section -->
-      <div v-if="searchResults" class="mb-6">
-        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-          <h3 class="text-lg font-semibold text-green-800 mb-2">
-            Search Results for "{{ searchResults.searchTerm }}"
-          </h3>
-          <p class="text-green-700">
-            <span class="font-bold">{{ searchResults.availableSpots }}</span> available spots 
-            out of <span class="font-bold">{{ searchResults.totalSpots }}</span> total spots
-          </p>
-        </div>
-      </div>
-
-      <!-- Loading State -->
-      <div v-if="loading" class="mb-6">
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div class="flex items-center">
-            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-3"></div>
-            <p class="text-blue-700">Loading parking data...</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Error Message -->
-      <div v-if="error" class="mb-6">
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-          <h3 class="text-lg font-semibold text-red-800 mb-2">Error</h3>
-          <p class="text-red-700">{{ error }}</p>
-        </div>
-      </div>
-
-      <!-- Parking Spots List -->
-      <div v-if="searchResults && searchResults.data.spots && searchResults.data.spots.length > 0" class="bg-white rounded-lg p-4 border">
-        <h4 class="font-semibold mb-3 text-lg">Available Parking Spots ({{ searchResults.data.spots.length }})</h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-60 overflow-y-auto">
-          <div 
-            v-for="spot in searchResults.data.spots" 
-            :key="spot.kerbsideId"
-            class="bg-gray-50 p-3 rounded border text-sm hover:bg-gray-100 cursor-pointer"
-            @click="focusOnSpot(spot)"
-          >
-            <div class="font-medium text-blue-600">Spot ID: {{ spot.kerbsideId }}</div>
-            <div class="text-gray-600">Zone: {{ spot.zoneNumber }}</div>
-            <div class="text-gray-600 text-xs">{{ spot.lat?.toFixed(6) }}, {{ spot.lng?.toFixed(6) }}</div>
-            <div class="text-green-600 font-medium">✓ {{ spot.status }}</div>
-          </div>
-        </div>
-        <p class="text-sm text-gray-500 mt-3">
-          Click on a parking spot to focus on it on the map
+        <p v-if="lengthError" class="error">
+          Input too long ({{ searchStreet.length }}/20). Please shorten.
         </p>
+        <p v-if="error" class="error">{{ error }}</p>
       </div>
+
+      <!-- Map -->
+      <section class="map-card">
+        <h3 class="map-title">Melbourne Parking Map</h3>
+        <div id="parking-map" ref="mapEl" class="map"></div>
+      </section>
     </main>
   </div>
 </template>
 
 <script>
-import HeaderBar from '../components/HeaderBar.vue'
-
-// Import Leaflet - FORCE IMPORT
-let L;
-try {
-  L = require('leaflet');
-  require('leaflet/dist/leaflet.css');
-  console.log('Leaflet imported successfully');
-} catch (error) {
-  console.error('Failed to import Leaflet:', error);
-}
-
-// Fix for Webpack marker icons - CRITICAL FIX
-if (L) {
-  delete L.Icon.Default.prototype._getIconUrl;
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-  });
-}
+import HeaderBar from '@/components/HeaderBar.vue'
+import * as L from 'leaflet'
 
 export default {
   name: 'ParkingView',
   components: { HeaderBar },
   data() {
     return {
+      searchType: 'street',
       searchStreet: '',
+      lengthError: false,
       loading: false,
-      searchResults: null,
-      error: null,
+      error: '',
+      apiUrl: import.meta?.env?.VUE_APP_API_URL || process.env.VUE_APP_API_URL,
       map: null,
-      markers: [],
-      // Your API Gateway URL from environment variable
-      apiUrl: process.env.VUE_APP_API_URL
+      markers: []
     }
   },
   mounted() {
-    // Debug environment variables
-    console.log('=== ENVIRONMENT DEBUG ===');
-    console.log('VUE_APP_API_URL:', process.env.VUE_APP_API_URL);
-    console.log('All env vars:', process.env);
-    console.log('API URL being used:', this.apiUrl);
-    
-    // Wait for DOM to be fully rendered
-    this.$nextTick(() => {
-      this.initializeMap();
-    });
-  },
-  beforeUnmount() {
-    if (this.map) {
-      this.map.remove();
-    }
+    this.$nextTick(this.initMap)
   },
   methods: {
-    initializeMap() {
-      console.log('=== MAP INITIALIZATION DEBUG ===');
-      
-      // Check if Leaflet is available
-      if (typeof L === 'undefined') {
-        console.error('LEAFLET NOT FOUND! Install with: npm install leaflet');
-        return;
-      }
-      
-      try {
-        const container = this.$refs.mapContainer;
-        console.log('Container element:', container);
-        
-        if (!container) {
-          console.error('MAP CONTAINER NOT FOUND!');
-          return;
-        }
-        
-        // Clear any existing content
-        container.innerHTML = '';
-        
-        console.log('Creating Leaflet map...');
-        
-        // Create map with explicit options
-        this.map = L.map(container, {
-          center: [-37.8136, 144.9631],
-          zoom: 13,
-          scrollWheelZoom: true,
-          zoomControl: true,
-          attributionControl: true
-        });
-        
-        console.log('Map object created:', this.map);
-        
-        // Add tile layer
-        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors',
-          maxZoom: 19
-        });
-        
-        tileLayer.addTo(this.map);
-        console.log('Tile layer added');
-        
-        // Add test marker
-        // eslint-disable-next-line no-unused-vars
-        const marker = L.marker([-37.8136, 144.9631])
-          .addTo(this.map)
-          .bindPopup('MAP IS WORKING!<br>Melbourne CBD<br>Search for parking above');
-        
-        console.log('Test marker added');
-        
-        // Force resize
-        setTimeout(() => {
-          if (this.map) {
-            this.map.invalidateSize();
-            console.log('MAP INITIALIZED SUCCESSFULLY!');
-          }
-        }, 200);
-        
-      } catch (error) {
-        console.error('MAP INITIALIZATION FAILED:', error);
-      }
+    validateLength() {
+      this.lengthError =
+        (this.searchStreet && this.searchStreet.length > 20) ? true : false
     },
-    
+    initMap() {
+      if (this.map) return
+      this.map = L.map(this.$refs.mapEl, {
+        center: [-37.8136, 144.9631], // Melbourne
+        zoom: 14
+      })
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+      }).addTo(this.map)
+    },
     async searchParking() {
-      if (!this.searchStreet.trim()) return;
-      
-      this.loading = true;
-      this.error = null;
-      this.searchResults = null;
-      this.clearMarkers();
-      
+      this.validateLength()
+      if (this.lengthError || !this.searchStreet.trim()) return
+
+      this.error = ''
+      this.loading = true
       try {
-        console.log('Searching for:', this.searchStreet);
-        
-        // Make API call to your Lambda function
-        const response = await fetch(`${this.apiUrl}?street=${encodeURIComponent(this.searchStreet)}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        console.log('API Response:', data);
-        
-        if (data.success) {
-          this.searchResults = data;
-          
-          // Center map and add markers
-          if (data.data.lat && data.data.lng) {
-            this.centerMap(data.data.lat, data.data.lng);
-          }
-          
-          // Add parking spot markers
-          if (data.data.spots && data.data.spots.length > 0) {
-            this.addParkingMarkers(data.data.spots);
-          }
-        } else {
-          this.error = data.error || 'Failed to fetch parking data';
-        }
-        
-      } catch (err) {
-        console.error('Search error:', err);
-        console.error('API URL being called:', `${this.apiUrl}?street=${encodeURIComponent(this.searchStreet)}`);
-        this.error = `Failed to connect to parking service: ${err.message}`;
-      } finally {
-        this.loading = false;
-      }
-    },
-    
-    centerMap(lat, lng) {
-      if (this.map) {
-        this.map.setView([lat, lng], 16);
-        
-        // Add a center marker for the search area
-        const centerMarker = L.marker([lat, lng], {
-          icon: L.divIcon({
-            html: '<div style="background-color: #3b82f6; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white;"></div>',
-            iconSize: [20, 20],
-            className: 'custom-div-icon'
+        const url = `${this.apiUrl}?type=${encodeURIComponent(
+          this.searchType
+        )}&q=${encodeURIComponent(this.searchStreet)}`
+        const res = await fetch(url, {
+          headers: { Accept: 'application/json' }
+        })
+        if (!res.ok) throw new Error(`API request failed: ${res.status}`)
+        const data = await res.json()
+
+        // Clear old markers
+        this.markers.forEach(m => this.map.removeLayer(m))
+        this.markers = []
+
+        // Draw new markers if the API provides coords
+        if (data && Array.isArray(data.spots)) {
+          data.spots.forEach(s => {
+            if (s.lat && s.lng) {
+              const m = L.marker([s.lat, s.lng]).addTo(this.map)
+              if (s.name || s.zone) {
+                m.bindPopup(
+                  `<strong>${s.name || 'Spot'}</strong><br/>Zone: ${s.zone ?? '—'}`
+                )
+              }
+              this.markers.push(m)
+            }
           })
-        }).addTo(this.map);
-        
-        centerMarker.bindPopup(`Search Center: ${this.searchStreet}`);
-        this.markers.push(centerMarker);
-      }
-    },
-    
-    addParkingMarkers(spots) {
-      if (!this.map) return;
-      
-      spots.forEach(spot => {
-        // Create custom icon for available parking spots
-        const parkingIcon = L.divIcon({
-          html: `
-            <div style="
-              background-color: #10b981; 
-              color: white; 
-              width: 30px; 
-              height: 30px; 
-              border-radius: 50%; 
-              border: 2px solid white;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-weight: bold;
-              font-size: 12px;
-              box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            ">P</div>
-          `,
-          iconSize: [30, 30],
-          className: 'parking-spot-icon'
-        });
-        
-        const marker = L.marker([spot.lat, spot.lng], { icon: parkingIcon })
-          .addTo(this.map);
-        
-        // Create popup content
-        const popupContent = `
-          <div style="font-family: sans-serif;">
-            <h4 style="margin: 0 0 8px 0; color: #1f2937;">Parking Spot</h4>
-            <p style="margin: 4px 0;"><strong>Spot ID:</strong> ${spot.kerbsideId}</p>
-            <p style="margin: 4px 0;"><strong>Zone:</strong> ${spot.zoneNumber}</p>
-            <p style="margin: 4px 0;"><strong>Status:</strong> <span style="color: #10b981; font-weight: bold;">${spot.status}</span></p>
-            <p style="margin: 4px 0; font-size: 12px; color: #6b7280;">
-               ${spot.lat.toFixed(6)}, ${spot.lng.toFixed(6)}
-            </p>
-          </div>
-        `;
-        
-        marker.bindPopup(popupContent);
-        this.markers.push(marker);
-      });
-      
-      console.log(`Added ${spots.length} parking markers to map`);
-    },
-    
-    clearMarkers() {
-      this.markers.forEach(marker => {
-        this.map.removeLayer(marker);
-      });
-      this.markers = [];
-    },
-    
-    focusOnSpot(spot) {
-      if (this.map) {
-        this.map.setView([spot.lat, spot.lng], 18);
-        
-        // Find and open the popup for this spot
-        this.markers.forEach(marker => {
-          const markerLatLng = marker.getLatLng();
-          if (Math.abs(markerLatLng.lat - spot.lat) < 0.0001 && 
-              Math.abs(markerLatLng.lng - spot.lng) < 0.0001) {
-            marker.openPopup();
+          // Fit bounds if any markers
+          if (this.markers.length) {
+            const group = L.featureGroup(this.markers)
+            this.map.fitBounds(group.getBounds(), { padding: [20, 20] })
           }
-        });
+        }
+      } catch (e) {
+        this.error = e.message || 'Search failed'
+        // Keep map visible and usable
+      } finally {
+        this.loading = false
       }
     }
   }
@@ -380,50 +141,52 @@ export default {
 </script>
 
 <style scoped>
-.parking-view {
-  min-height: 100vh;
-  background-color: #ffffff;
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 16px; }
+.title { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+.subtitle { color: #555; margin-bottom: 16px; }
+
+.search-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
+.search-label { display: block; font-size: 14px; color: #666; margin-bottom: 8px; }
+.search-row { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* Ensure Leaflet map has proper dimensions */
-#parking-map {
-  height: 500px !important;
-  width: 100% !important;
-  position: relative;
-  z-index: 1;
+.select, .input {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
 }
-
-/* Import Leaflet CSS globally */
-@import 'leaflet/dist/leaflet.css';
-
-/* Fix for Leaflet markers */
-:deep(.leaflet-div-icon) {
-  background: transparent !important;
-  border: none !important;
+.input { min-width: 220px; flex: 1; }
+.btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
 }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.error { color: #b91c1c; font-size: 13px; margin-top: 6px; }
 
-:deep(.custom-div-icon) {
-  background: transparent !important;
-  border: none !important;
+.map-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
 }
+.map-title { font-weight: 600; margin-bottom: 8px; }
+.map { width: 100%; height: 500px; background: #f3f4f6; border-radius: 8px; }
 
-:deep(.parking-spot-icon) {
-  background: transparent !important;
-  border: none !important;
-}
-
-/* Ensure Leaflet controls are visible */
-:deep(.leaflet-control-zoom) {
-  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-}
-
-:deep(.leaflet-control-attribution) {
-  background: rgba(255, 255, 255, 0.7);
-}
-
-/* Force map container sizing */
-:deep(.leaflet-container) {
-  height: 500px !important;
-  width: 100% !important;
+@media (max-width: 640px) {
+  .container { padding: 24px 12px; }
+  .title { font-size: 24px; }
+  .search-row { flex-direction: column; align-items: stretch; }
+  .btn { width: 100%; }
 }
 </style>

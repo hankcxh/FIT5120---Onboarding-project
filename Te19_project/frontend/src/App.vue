@@ -1,29 +1,27 @@
 <template>
   <div id="app">
-    <!-- Your existing template content -->
     <router-view />
+    <FooterBar />
   </div>
 </template>
 
 <script>
-import { parkingAPI } from '@/services/api'
-import config from '@/config'
+import FooterBar from '@/components/FooterBar.vue'
 
 export default {
   name: 'App',
-  async mounted() {
-    console.log('API URL:', config.apiUrl)  // Should show http://localhost:8000
-    
-    try {
-      const response = await parkingAPI.getParkingData()
-      console.log('Data:', response.data)
-    } catch (error) {
-      console.error('API Error:', error)
-    }
-  }
+  components: { FooterBar }
 }
 </script>
 
 <style>
-/* Your existing styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff; 
+}
+
+* {
+  box-sizing: border-box;
+}
 </style>
