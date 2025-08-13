@@ -48,6 +48,11 @@
             </div>
           </div>
         </section>
+        <div class="bottom-button">
+        <router-link to="/parking" class="btn-link">
+          Want to Parking Information?
+        </router-link>
+      </div>
       </div>
     </main>
   </div>
@@ -213,4 +218,25 @@ h1 { font-size: 28px; font-weight: 800; margin-bottom: 16px; }
 .insight-list li { margin: 8px 0; line-height: 1.45; color: #374151; }
 @media (max-width: 900px) { .split-grid { grid-template-columns: 1fr; } .chart-wrap { height: 240px; } }
 @media (max-width: 640px) { .container { padding: 24px 12px; } h1 { font-size: 22px; } }
+
+.bottom-button {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.btn-link {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.btn-link:hover {
+  background: #1d4ed8;
+}
+
 </style>

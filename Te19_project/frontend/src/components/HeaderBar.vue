@@ -43,17 +43,18 @@ export default { name: 'HeaderBar' }
   display: flex;
   align-items: center;
   gap: 12px;
+  text-decoration: none;
 }
 
 .logo-img {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
+  height: 40px;
+
 }
 
 .brand-text {
   font-weight: 800;
   letter-spacing: .3px;
+  color: inherit;
 }
 
 .nav-links {
