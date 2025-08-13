@@ -3,8 +3,8 @@
     <HeaderBar />
     <section class="hero">
       <div class="overlay">
-        <h1>Smart commuting, greening Melbourne</h1>
-        <p>Get instant parking and commuting information to create a green city</p>
+        <h1>Smart commuting and Parking in Melbourne</h1>
+        <p>Get instant parking and commuting information to create a great city</p>
         <router-link to="/insights" class="cta-button">Get started</router-link>
       </div>
     </section>
