@@ -4,11 +4,11 @@
 
     <main class="container">
       <h1 class="title">Real-time parking information</h1>
-      <p class="subtitle">Search by street zone.</p>
+      <p class="subtitle">Search by street name or zone number.</p>
 
       <!-- Search row -->
       <div class="search-card">
-        <label class="search-label">Search parking (Zone)</label>
+        <label class="search-label">Search parking (Street or Zone)</label>
         <div class="search-row">
           <input
             v-model="searchStreet"
@@ -17,12 +17,12 @@
             @input="validateLength"
             @keyup.enter="searchParking"
             class="input"
-            placeholder="e.g. 7924, 2423"
+            placeholder="e.g. Collins, Bourke, Spencer, or 7084"
           />
 
           <button
             class="btn"
-            :disabled="loading || !searchStreet.trim() || lengthError"
+            :disabled="loading || lengthError"
             @click="searchParking"
           >
             {{ loading ? 'Searching...' : 'Search' }}
@@ -37,7 +37,7 @@
 
       <!-- Map -->
       <section class="map-card">
-        <h3 class="map-title">Melbourne Parking Map</h3>
+        <h3 class="map-title">Melbourne Parking Map ({{ spotCount }} available spots)</h3>
         <div id="parking-map" ref="mapEl" class="map"></div>
       </section>
     </main>
@@ -57,16 +57,17 @@ export default {
       lengthError: false,
       loading: false,
       error: '',
-      apiUrl:
-        import.meta?.env?.VUE_APP_API_URL ||
-        process.env.VUE_APP_API_URL ||
-        'https://ccj3gsn6fl.execute-api.ap-southeast-2.amazonaws.com/prod/parking',
+      spotCount: 0,
+      apiUrl: 'https://ccj3gsn6fl.execute-api.ap-southeast-2.amazonaws.com/prod/parking',
       map: null,
       markers: []
     }
   },
   mounted() {
-    this.$nextTick(this.initMap)
+    this.$nextTick(() => {
+      this.initMap()
+      this.loadAllParking() // Load all parking spots on page load
+    })
   },
   methods: {
     validateLength() {
@@ -77,7 +78,7 @@ export default {
     initMap() {
       if (this.map) return
       this.map = L.map(this.$refs.mapEl, {
-        center: [-37.8136, 144.9631], // Melbourne
+        center: [-37.8136, 144.9631], // Melbourne CBD
         zoom: 14
       })
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -86,67 +87,190 @@ export default {
       }).addTo(this.map)
     },
 
+    // Load all available parking spots when page loads
+    async loadAllParking() {
+      this.loading = true
+      this.error = ''
+      
+      try {
+        console.log('Loading all available parking spots...')
+        console.log('API URL:', this.apiUrl)
+        
+        const response = await fetch(this.apiUrl, { 
+          method: 'GET',
+          headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          mode: 'cors'
+        })
+
+        console.log('Response status:', response.status)
+        console.log('Response headers:', response.headers)
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+
+        const data = await response.json()
+        console.log('Received data:', data)
+        
+        if (data && data.success) {
+          this.displayParkingSpots(data.spots || [], 'All available parking spots')
+          this.spotCount = data.total_spots || 0
+        } else {
+          this.error = data?.message || 'Failed to load parking data'
+          this.spotCount = 0
+        }
+      } catch (e) {
+        console.error('Load all parking error:', e)
+        this.error = `Unable to load parking information at the moment. Please try again.`
+        this.spotCount = 0
+      } finally {
+        this.loading = false
+      }
+    },
+
     async searchParking() {
       this.validateLength()
       if (this.lengthError) return
 
       const street = (this.searchStreet || '').trim()
       if (!street) {
-        this.error = 'Please enter a street name.'
+        // If search is empty, load all parking spots
+        this.loadAllParking()
         return
       }
 
       this.error = ''
       this.loading = true
+      
       try {
-        // IMPORTANT: backend requires ?street=
+        console.log(`Searching for: ${street}`)
         const url = `${this.apiUrl}?street=${encodeURIComponent(street)}`
-        const res = await fetch(url, { headers: { Accept: 'application/json' } })
+        console.log('Search URL:', url)
+        
+        const response = await fetch(url, { 
+          method: 'GET',
+          headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          mode: 'cors'
+        })
 
-        // grab body even for errors so you can see server messages
-        const ct = res.headers.get('content-type') || ''
-        const body = ct.includes('application/json')
-          ? await res.json().catch(() => ({}))
-          : await res.text().catch(() => '')
+        console.log('Search response status:', response.status)
 
-        if (!res.ok) {
-          const msg = typeof body === 'string' ? body : JSON.stringify(body)
-          throw new Error(`Server ${res.status}: ${msg || 'Request not accepted'}`)
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
         }
 
-        const data = typeof body === 'string' ? JSON.parse(body) : body
+        const data = await response.json()
+        console.log('Search data received:', data)
 
-        // Clear old markers
-        this.markers.forEach(m => this.map.removeLayer(m))
-        this.markers = []
-
-        if (data && Array.isArray(data.spots)) {
-          data.spots.forEach(s => {
-            if (s.lat && s.lng) {
-              const m = L.marker([s.lat, s.lng]).addTo(this.map)
-              if (s.name || s.zone) {
-                m.bindPopup(
-                  `<strong>${s.name || 'Spot'}</strong><br/>Zone: ${s.zone ?? '—'}`
-                )
-              }
-              this.markers.push(m)
-            }
-          })
-          if (this.markers.length) {
-            const group = L.featureGroup(this.markers)
-            this.map.fitBounds(group.getBounds(), { padding: [20, 20] })
-          } else {
-            this.error = 'No parking spots found for this street.'
+        if (data && data.success) {
+          this.displayParkingSpots(data.spots || [], `${data.street_name || street}`)
+          this.spotCount = data.total_available_spots || 0
+          
+          // Center map on search results if bounds provided
+          if (data.map_bounds) {
+            const bounds = data.map_bounds
+            this.map.fitBounds([
+              [bounds.southwest.lat, bounds.southwest.lon],
+              [bounds.northeast.lat, bounds.northeast.lon]
+            ], { padding: [20, 20] })
           }
         } else {
-          this.error = 'Unexpected server response format.'
-          console.warn('Unexpected response:', data)
+          this.error = `No available parking spots found for "${street}"`
+          this.clearMarkers()
+          this.spotCount = 0
         }
       } catch (e) {
-        this.error = e.message || 'Search failed.'
-        console.error(e)
+        console.error('Search error:', e)
+        // Handle different types of errors with user-friendly messages
+        if (e.message.includes('404')) {
+          this.error = `No available parking spots found for "${street}". Try: Collins, Bourke, Russell, Spencer, or Queen.`
+        } else if (e.message.includes('403')) {
+          this.error = `No available parking spots found for "${street}"`
+        } else if (e.message.includes('500')) {
+          this.error = `No available parking spots found for "${street}"`
+        } else {
+          this.error = `No available parking spots found for "${street}"`
+        }
+        this.clearMarkers()
+        this.spotCount = 0
       } finally {
         this.loading = false
+      }
+    },
+
+    displayParkingSpots(spots, title) {
+      console.log(`Displaying ${spots.length} parking spots for: ${title}`)
+      
+      // Clear existing markers
+      this.clearMarkers()
+
+      if (!spots || spots.length === 0) {
+        this.error = `No available parking spots found`
+        return
+      }
+
+      // Add markers for each parking spot
+      spots.forEach((spot, index) => {
+        if (spot.latitude && spot.longitude) {
+          // Create green marker for available parking
+          const marker = L.marker([spot.latitude, spot.longitude], {
+            icon: L.divIcon({
+              className: 'parking-marker',
+              html: '<div class="marker-icon">P</div>',
+              iconSize: [30, 30],
+              iconAnchor: [15, 15]
+            })
+          }).addTo(this.map)
+
+          // Add popup with parking info
+          const popupContent = `
+            <div class="parking-popup">
+              <h4>Zone ${spot.zone_number}</h4>
+              <p><strong>Status:</strong> Available</p>
+              <p><strong>Kerbside ID:</strong> ${spot.kerbsideid}</p>
+              <p><strong>Last Updated:</strong><br>${this.formatDateTime(spot.status_timestamp)}</p>
+            </div>
+          `
+          marker.bindPopup(popupContent)
+          this.markers.push(marker)
+        } else {
+          console.warn(`Spot ${index} missing coordinates:`, spot)
+        }
+      })
+
+      // Fit map to show all markers if we have any
+      if (this.markers.length > 0) {
+        const group = L.featureGroup(this.markers)
+        this.map.fitBounds(group.getBounds(), { padding: [20, 20] })
+      } else {
+        // Reset to Melbourne CBD view
+        this.map.setView([-37.8136, 144.9631], 14)
+      }
+    },
+
+    clearMarkers() {
+      this.markers.forEach(m => this.map.removeLayer(m))
+      this.markers = []
+    },
+
+    formatDateTime(dateString) {
+      if (!dateString) return 'Unknown'
+      try {
+        return new Date(dateString).toLocaleString('en-AU', {
+          year: 'numeric',
+          month: 'short', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      } catch {
+        return 'Invalid date'
       }
     }
   }
@@ -196,6 +320,35 @@ export default {
 }
 .map-title { font-weight: 600; margin-bottom: 8px; }
 .map { width: 100%; height: 500px; background: #f3f4f6; border-radius: 8px; }
+
+/* Custom parking marker styles */
+:deep(.parking-marker) {
+  background: #22c55e;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:deep(.marker-icon) {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+:deep(.parking-popup h4) {
+  margin: 0 0 8px 0;
+  color: #2563eb;
+  font-size: 16px;
+}
+
+:deep(.parking-popup p) {
+  margin: 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
 
 @media (max-width: 640px) {
   .container { padding: 24px 12px; }
