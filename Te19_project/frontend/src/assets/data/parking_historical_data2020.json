@@ -1,0 +1,1950 @@
+{
+  "KING STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      5901283.0,
+      5457857.0,
+      6629745.0,
+      5213586.0,
+      4179380.0
+    ]
+  },
+  "ELIZABETH STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1844578.0,
+      1565200.0,
+      2001071.0,
+      1992893.0,
+      1775698.0
+    ]
+  },
+  "EXHIBITION STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      5674118.0,
+      5344215.0,
+      5592498.0,
+      5321992.0,
+      4720300.0
+    ]
+  },
+  "LITTLE BOURKE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2041275.0,
+      1887447.0,
+      1966299.0,
+      1871973.0,
+      1588526.0
+    ]
+  },
+  "BOURKE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      7124331.0,
+      6678675.0,
+      7105359.0,
+      6620882.0,
+      5799740.0
+    ]
+  },
+  "LITTLE COLLINS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2262515.0,
+      2105274.0,
+      2512227.0,
+      2066244.0,
+      1761196.0
+    ]
+  },
+  "SPENCER STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      979074.0,
+      984748.0,
+      1158219.0,
+      843410.0,
+      622799.0
+    ]
+  },
+  "FLINDERS LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1355088.0,
+      1185995.0,
+      1310411.0,
+      1172293.0,
+      996927.0
+    ]
+  },
+  "QUEEN STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      6666257.0,
+      6196410.0,
+      6226865.0,
+      5054408.0,
+      4083879.0
+    ]
+  },
+  "COLLINS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      3617252.0,
+      3360040.0,
+      3685610.0,
+      3315905.0,
+      2957042.0
+    ]
+  },
+  "WELLS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      669650.0,
+      650147.0,
+      770646.0,
+      724048.0,
+      617169.0
+    ]
+  },
+  "WILLIAM STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      5294193.0,
+      5062998.0,
+      5263268.0,
+      4402470.0,
+      3393590.0
+    ]
+  },
+  "SPRING STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      3917752.0,
+      3793068.0,
+      3991588.0,
+      3798138.0,
+      3203883.0
+    ]
+  },
+  "MARKET STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      131159.0,
+      142114.0,
+      188844.0,
+      168199.0,
+      169273.0
+    ]
+  },
+  "MILES STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1016871.0,
+      919690.0,
+      1004672.0,
+      883272.0,
+      797269.0
+    ]
+  },
+  "BOND STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      88897.0,
+      55177.0,
+      88609.0,
+      120683.0,
+      109646.0
+    ]
+  },
+  "MERCHANT STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1041443.0,
+      998220.0,
+      1059535.0,
+      973215.0,
+      850971.0
+    ]
+  },
+  "FLINDERS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1473964.0,
+      1357554.0,
+      1585939.0,
+      1412680.0,
+      1195387.0
+    ]
+  },
+  "CITY ROAD": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      617111.0,
+      543049.0,
+      575862.0,
+      570396.0,
+      539448.0
+    ]
+  },
+  "NAVIGATION DRIVE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      913142.0,
+      764979.0,
+      823998.0,
+      809596.0,
+      757991.0
+    ]
+  },
+  "RUSSELL STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      3924702.0,
+      3690396.0,
+      3946698.0,
+      3704174.0,
+      3279383.0
+    ]
+  },
+  "FARADAY STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1739402.0,
+      1621161.0,
+      1705632.0,
+      1575302.0,
+      1385061.0
+    ]
+  },
+  "JEFFCOTT STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1240364.0,
+      1204040.0,
+      1287073.0,
+      1143667.0,
+      982990.0
+    ]
+  },
+  "DODDS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2578105.0,
+      2395938.0,
+      2516915.0,
+      1997867.0,
+      1675752.0
+    ]
+  },
+  "ALBERT STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      4047346.0,
+      3233635.0,
+      3492081.0,
+      2927966.0,
+      2271080.0
+    ]
+  },
+  "WALSH STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      5512712.0,
+      5118726.0,
+      4508008.0,
+      2924326.0,
+      1696203.0
+    ]
+  },
+  "KAVANAGH STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1827189.0,
+      1737127.0,
+      1517590.0,
+      1512399.0,
+      1276218.0
+    ]
+  },
+  "HOWARD STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      3555588.0,
+      3089408.0,
+      3046205.0,
+      2549908.0,
+      2327761.0
+    ]
+  },
+  "HARBOUR ESPLANADE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1952528.0,
+      1878070.0,
+      1946400.0,
+      1826092.0,
+      1671642.0
+    ]
+  },
+  "CUMBERLAND STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      86889.0,
+      85825.0,
+      133591.0,
+      114722.0,
+      104944.0
+    ]
+  },
+  "FRANCIS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      393312.0,
+      330056.0,
+      351688.0,
+      325829.0,
+      249768.0
+    ]
+  },
+  "BATMANS HILL DRIVE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1368045.0,
+      1105589.0,
+      1278560.0,
+      1217459.0,
+      894065.0
+    ]
+  },
+  "LA TROBE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      4505296.0,
+      4144861.0,
+      4193110.0,
+      3808967.0,
+      3165787.0
+    ]
+  },
+  "SEAFARER LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      85435.0,
+      82539.0,
+      64237.0,
+      80381.0,
+      71059.0
+    ]
+  },
+  "BRENTANI WAY": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      177323.0,
+      163318.0,
+      177879.0,
+      170602.0,
+      144534.0
+    ]
+  },
+  "FISHPLATE LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April"
+    ],
+    "usage_minutes": [
+      217511.0,
+      203485.0,
+      214914.0,
+      200577.0
+    ]
+  },
+  "MCCRAE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      88040.0,
+      80380.0,
+      89260.0,
+      85744.0,
+      73153.0
+    ]
+  },
+  "ROYAL PARADE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2269005.0,
+      2065440.0,
+      2033206.0,
+      1811405.0,
+      1622938.0
+    ]
+  },
+  "ST KILDA ROAD": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      954112.0,
+      475903.0,
+      708584.0,
+      773047.0,
+      572858.0
+    ]
+  },
+  "JOLIMONT ROAD": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      895362.0,
+      833147.0,
+      764115.0,
+      386044.0,
+      219080.0
+    ]
+  },
+  "COVENTRY STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      3875476.0,
+      3731660.0,
+      4250099.0,
+      3690956.0,
+      3305810.0
+    ]
+  },
+  "CATHEDRAL PLACE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1382995.0,
+      1294198.0,
+      1383195.0,
+      1160303.0,
+      945648.0
+    ]
+  },
+  "PELHAM STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1558760.0,
+      1460387.0,
+      1650386.0,
+      1451436.0,
+      991398.0
+    ]
+  },
+  "LEVESON STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1550771.0,
+      1446207.0,
+      1507704.0,
+      1329423.0,
+      1185626.0
+    ]
+  },
+  "SWANSTON STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1256232.0,
+      1228779.0,
+      1039233.0,
+      903813.0,
+      863072.0
+    ]
+  },
+  "LONSDALE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      7386508.0,
+      6818251.0,
+      7237876.0,
+      7142605.0,
+      6319269.0
+    ]
+  },
+  "LITTLE LONSDALE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      4371829.0,
+      4141904.0,
+      4375886.0,
+      4189476.0,
+      3506302.0
+    ]
+  },
+  "FRANKLIN STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      6954204.0,
+      5973850.0,
+      5870738.0,
+      5032202.0,
+      3595684.0
+    ]
+  },
+  "THERRY STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1143295.0,
+      778658.0,
+      794225.0,
+      732056.0,
+      434080.0
+    ]
+  },
+  "ROSSLYN STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2092700.0,
+      1969862.0,
+      1705655.0,
+      1231510.0,
+      888632.0
+    ]
+  },
+  "A'BECKETT STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      760507.0,
+      568986.0,
+      550420.0,
+      499057.0,
+      449218.0
+    ]
+  },
+  "EADES PLACE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1221787.0,
+      1125958.0,
+      1104414.0,
+      923572.0,
+      735830.0
+    ]
+  },
+  "CAPEL STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      3666923.0,
+      3462334.0,
+      3211064.0,
+      2418972.0,
+      1911590.0
+    ]
+  },
+  "QUEENSBERRY STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2620209.0,
+      2463279.0,
+      1918347.0,
+      1405632.0,
+      1224132.0
+    ]
+  },
+  "CHETWYND STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2957635.0,
+      2785640.0,
+      2431259.0,
+      2038719.0,
+      1951613.0
+    ]
+  },
+  "O'CONNELL STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2270738.0,
+      2101591.0,
+      2234735.0,
+      2012325.0,
+      1783514.0
+    ]
+  },
+  "COBDEN STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1820759.0,
+      1682141.0,
+      1809339.0,
+      1648419.0,
+      1513915.0
+    ]
+  },
+  "ERROL STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1811735.0,
+      1687682.0,
+      1758724.0,
+      1573835.0,
+      1468111.0
+    ]
+  },
+  "DOCKLANDS DRIVE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      445504.0,
+      389299.0,
+      404240.0,
+      439583.0,
+      363176.0
+    ]
+  },
+  "LEVEN AVENUE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      228622.0,
+      204234.0,
+      222104.0,
+      221994.0,
+      181352.0
+    ]
+  },
+  "CARAVEL LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      846642.0,
+      800636.0,
+      847101.0,
+      809659.0,
+      674828.0
+    ]
+  },
+  "WATERVIEW WALK": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      588518.0,
+      488561.0,
+      587799.0,
+      578265.0,
+      506675.0
+    ]
+  },
+  "AURORA LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      371662.0,
+      321862.0,
+      395667.0,
+      372483.0,
+      307863.0
+    ]
+  },
+  "VILLAGE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      621136.0,
+      487391.0,
+      593438.0,
+      602834.0,
+      541452.0
+    ]
+  },
+  "CLARENDON STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      4572692.0,
+      3948175.0,
+      4432740.0,
+      4094982.0,
+      3051589.0
+    ]
+  },
+  "NICHOLSON STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      734699.0,
+      701562.0,
+      708533.0,
+      665479.0,
+      528125.0
+    ]
+  },
+  "AUGUSTA AVENUE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      161411.0,
+      163545.0,
+      177437.0,
+      184605.0,
+      146053.0
+    ]
+  },
+  "LITTLE DOCKLANDS DRIVE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      352484.0,
+      255159.0,
+      264079.0,
+      265358.0,
+      205893.0
+    ]
+  },
+  "GEOGRAPHE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      742328.0,
+      696695.0,
+      740543.0,
+      706135.0,
+      610195.0
+    ]
+  },
+  "IMPORT LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      477360.0,
+      451577.0,
+      484257.0,
+      459583.0,
+      395714.0
+    ]
+  },
+  "ENTERPRIZE WAY": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      228810.0,
+      196511.0,
+      188103.0,
+      159066.0,
+      73096.0
+    ]
+  },
+  "KARLSRUHE LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      304938.0,
+      289020.0,
+      310998.0,
+      283069.0,
+      252234.0
+    ]
+  },
+  "PEARL RIVER ROAD": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      903455.0,
+      837183.0,
+      782039.0,
+      870750.0,
+      759686.0
+    ]
+  },
+  "WATTLE ROAD": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      127785.0,
+      124936.0,
+      128192.0,
+      124902.0,
+      109784.0
+    ]
+  },
+  "AQUITANIA WAY": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      388244.0,
+      357518.0,
+      404393.0,
+      339641.0,
+      296003.0
+    ]
+  },
+  "GRANT STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      4492189.0,
+      4325486.0,
+      4543268.0,
+      3585354.0,
+      3362319.0
+    ]
+  },
+  "WILLS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      424436.0,
+      408443.0,
+      435364.0,
+      420084.0,
+      365119.0
+    ]
+  },
+  "PRINCESS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      358058.0,
+      330359.0,
+      354057.0,
+      339675.0,
+      291627.0
+    ]
+  },
+  "LANSDOWNE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2500955.0,
+      2180664.0,
+      2501599.0,
+      2393082.0,
+      1990477.0
+    ]
+  },
+  "GISBORNE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      750934.0,
+      545154.0,
+      633953.0,
+      527177.0,
+      316988.0
+    ]
+  },
+  "PARLIAMENT PLACE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      298642.0,
+      280318.0,
+      307646.0,
+      207074.0,
+      174398.0
+    ]
+  },
+  "DOEPEL WAY": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      43200.0,
+      37020.0,
+      39859.0,
+      37960.0,
+      36199.0
+    ]
+  },
+  "WATERFRONT WAY": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      306251.0,
+      557922.0,
+      532403.0,
+      514114.0,
+      395807.0
+    ]
+  },
+  "STURT STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      629340.0,
+      375987.0,
+      511050.0,
+      1066288.0,
+      933995.0
+    ]
+  },
+  "WELLINGTON PARADE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2427445.0,
+      2039571.0,
+      2269823.0,
+      1915122.0,
+      1585303.0
+    ]
+  },
+  "SAINT MANGOS LANE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      39252.0,
+      39579.0,
+      42545.0,
+      45937.0,
+      27990.0
+    ]
+  },
+  "CHURCH STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      309935.0,
+      291167.0,
+      275617.0,
+      295655.0,
+      249455.0
+    ]
+  },
+  "JOLIMONT STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2150155.0,
+      1979167.0,
+      2020060.0,
+      1677625.0,
+      813172.0
+    ]
+  },
+  "SOUTHBANK BOULEVARD": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      243601.0,
+      192852.0,
+      164508.0,
+      127724.0,
+      110879.0
+    ]
+  },
+  "ST ANDREWS PLACE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      998476.0,
+      1372797.0,
+      1002851.0,
+      1197448.0,
+      1147954.0
+    ]
+  },
+  "DORCAS STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1356932.0,
+      1293447.0,
+      1550356.0,
+      1393969.0,
+      1279015.0
+    ]
+  },
+  "DUDLEY STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1235642.0,
+      842980.0,
+      948731.0,
+      796102.0,
+      598243.0
+    ]
+  },
+  "AIRLIE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1711518.0,
+      1504874.0,
+      1033111.0,
+      431990.0,
+      130207.0
+    ]
+  },
+  "FAIRLIE COURT": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      624952.0,
+      583129.0,
+      388305.0,
+      19284.0,
+      3264.0
+    ]
+  },
+  "VICTORIA STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1805436.0,
+      1655318.0,
+      1586325.0,
+      1133880.0,
+      928809.0
+    ]
+  },
+  "RAKAIA WAY": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      160765.0,
+      152529.0,
+      172213.0,
+      168405.0,
+      146664.0
+    ]
+  },
+  "EADES STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      890007.0,
+      828388.0,
+      882067.0,
+      848740.0,
+      691383.0
+    ]
+  },
+  "PEEL STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      347246.0,
+      316407.0,
+      376687.0,
+      207445.0,
+      184001.0
+    ]
+  },
+  "ACLAND STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1427274.0,
+      1332852.0,
+      1232510.0,
+      943904.0,
+      546842.0
+    ]
+  },
+  "WELLINGTON PARADE SOUTH": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2501826.0,
+      2242322.0,
+      2173922.0,
+      1813665.0,
+      1306820.0
+    ]
+  },
+  "VEGEMITE WAY": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1209771.0,
+      1128064.0,
+      1150626.0,
+      994060.0,
+      466887.0
+    ]
+  },
+  "GEORGIANA STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      89090.0,
+      82623.0,
+      89033.0,
+      84586.0,
+      72784.0
+    ]
+  },
+  "CURZON STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      734516.0,
+      700297.0,
+      719283.0,
+      663655.0,
+      601739.0
+    ]
+  },
+  "CLOWES STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2275668.0,
+      1994964.0,
+      1439639.0,
+      833464.0,
+      471759.0
+    ]
+  },
+  "ANDERSON STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1804140.0,
+      3550366.0,
+      2751973.0,
+      1535816.0,
+      625820.0
+    ]
+  },
+  "JOLIMONT TERRACE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      2137102.0,
+      1980287.0,
+      1769680.0,
+      1222134.0,
+      686280.0
+    ]
+  },
+  "VALE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      449730.0,
+      362416.0,
+      290161.0,
+      144622.0,
+      113680.0
+    ]
+  },
+  "SAINT MANGOS LANE NORTH": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      308242.0,
+      291358.0,
+      294258.0,
+      315227.0,
+      255817.0
+    ]
+  },
+  "MACKENZIE STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      434157.0,
+      411995.0,
+      418289.0,
+      399487.0,
+      347664.0
+    ]
+  },
+  "BATMAN STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      743652.0,
+      672081.0,
+      496565.0,
+      479502.0,
+      390081.0
+    ]
+  },
+  "STANLEY STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      391566.0,
+      375434.0,
+      254334.0,
+      131975.0,
+      96459.0
+    ]
+  },
+  "LITTLE DRYBURGH STREET SOUTH": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      255694.0,
+      238057.0,
+      245559.0,
+      217237.0,
+      195012.0
+    ]
+  },
+  "DRYBURGH STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      136921.0,
+      94311.0,
+      146161.0,
+      87406.0,
+      147193.0
+    ]
+  },
+  "VICTORIA PARADE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      1158775.0,
+      1084094.0,
+      797228.0,
+      376162.0,
+      252615.0
+    ]
+  },
+  "SIMPSON STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      459428.0,
+      212359.0,
+      100936.0,
+      79721.0,
+      30711.0
+    ]
+  },
+  "AGNES STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      805222.0,
+      648478.0,
+      454667.0,
+      283507.0,
+      142120.0
+    ]
+  },
+  "CHARLES STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      277020.0,
+      242450.0,
+      189870.0,
+      138484.0,
+      63972.0
+    ]
+  },
+  "BERRY STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      740192.0,
+      578584.0,
+      431389.0,
+      272789.0,
+      161744.0
+    ]
+  },
+  "VALE STREET SOUTH": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      395507.0,
+      298575.0,
+      249587.0,
+      177550.0,
+      101728.0
+    ]
+  },
+  "PALMER STREET": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      159531.0,
+      133318.0,
+      120301.0,
+      46391.0,
+      7825.0
+    ]
+  },
+  "ST LEONARDS COURT": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May"
+    ],
+    "usage_minutes": [
+      951031.0,
+      570977.0,
+      333251.0,
+      180871.0,
+      58590.0
+    ]
+  },
+  "WITCHWOOD CLOSE": {
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April"
+    ],
+    "usage_minutes": [
+      86846.0,
+      46575.0,
+      13895.0,
+      4160.0
+    ]
+  }
+}

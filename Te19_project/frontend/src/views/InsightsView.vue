@@ -50,7 +50,7 @@
         </section>
         <div class="bottom-button">
         <router-link to="/parking" class="btn-link">
-          Want to Parking Information?
+          Want Parking Information?
         </router-link>
       </div>
       </div>
