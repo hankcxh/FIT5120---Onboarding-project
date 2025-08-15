@@ -319,7 +319,7 @@ export default {
   padding: 16px;
 }
 .map-title { font-weight: 600; margin-bottom: 8px; }
-.map { width: 100%; height: 500px; background: #f3f4f6; border-radius: 8px; }
+.map { width: 100%; height: 500px; background: #f3f4f6; border-radius: 8px; z-index: 10; }
 
 /* Custom parking marker styles */
 :deep(.parking-marker) {
